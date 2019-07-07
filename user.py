@@ -37,9 +37,9 @@ def upload():
             file.save(destination)
         
         mongo.db.suspect.insert({"_id": Id,"name":Uname,"message": Message,"Path":destination})
-        return (destination)
+        
 
-        #return ("Successfully Add")
+        return ("Successfully Add")
 @app.route("/suspect", methods=['GET'])
 def retrieve():
     if request.method=='GET':
