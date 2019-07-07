@@ -1,6 +1,7 @@
     
 from flask_pymongo import PyMongo
 from flask import Flask, jsonify,json,request,render_template
+import os
 
 
 app = Flask(__name__)
@@ -11,6 +12,124 @@ app.config['MONGO_URI']='mongodb://hammad:hammad123@ds351455.mlab.com:51455/data
 mongo = PyMongo(app)
 
 
+@app.route("/suspect", methods=['POST'])
+def upload():
+    if request.method=='POST':
+        
+
+        Uname=request.form['name']
+        Id=request.form['id']
+        Message=request.form['message']#s='img/'+Id
+
+        target = os.path.join(APP_ROOT, 'img/')
+
+
+        if not os.path.isdir(target):
+            os.mkdir(target)
+                
+        for file in request.files.getlist("img"):
+            print(file)
+            #filename= file.filename
+            filename=Id+'.jpg'
+            destination = "/".join([target, filename])
+            print(destination)
+            file.save(destination)
+        
+        mongo.db.suspect.insert({"_id": Id,"name":Uname,"message": Message,"Path":destination})
+        
+
+        return ("Successfully Add")   
+       # return render_template("suspect_form.html")
+
+    #else:
+     # return render_template("suspect_form.html")
+
+
+@app.route("/suspect", methods=['GET'])
+def retrieve():
+    if request.method=='GET':
+        
+        target = "/".join(['D:', 'flasky'])
+        target1 = "/".join([target, 'fyp'])
+        target2 = "/".join([target1, 'img'])
+        
+        data = mongo.db.suspect.find({}).count()
+        if (data == 0):
+            return "data not found"
+        else:
+            d = []
+            data=mongo.db.suspect.find({})
+            for i in data:
+                image="/".join([target2, i['_id']])
+                print(image)
+                d.append({"id":i["_id"] ,"name": i["name"],"message":i["message"],'image':image})
+        
+            return jsonify(d)
+            
+
+@app.route("/suspect/<string:param>", methods=['DELETE'])
+def delete(param):
+    if request.method=='DELETE':
+        
+        data=mongo.db.suspect.find({'_id': param})
+        ddd={}
+        data=mongo.db.suspect.find({'_id': param})
+        for i in data:
+          ddd={"id":i["_id"] ,"name": i["name"],"message":i["message"],'Path':i["Path"]}  
+          print("yaho")
+        print("yaho1")
+            
+        addrr=ddd['Path']
+        print(addrr)
+
+
+        mongo.db.suspect.delete_one({'_id': param})
+        os.remove(addrr)
+        return "deleted"
+        
+@app.route("/suspect/<string:param>", methods=['POST','GET'])
+def Update(param):
+    if request.method=='GET':
+        print("enter")
+        if (mongo.db.suspect.find({'_id': param})):
+             d = []
+             data=mongo.db.suspect.find({'_id':param})
+             for i in data:
+                 d.append({"id":param ,"name": i["name"],"message":i["message"],'Path':i['Path']})
+             print (d[0])
+             return jsonify(d)
+             print(d)
+        return ('not find')                
+    if request.method=='POST':
+        Uname=request.form['name']
+        Id=param
+        Message=request.form['message']
+        
+        d={}
+        data=mongo.db.suspect.find({'_id': param})
+        for i in data:
+          dd={"id":i["_id"] ,"name": i["name"],"message":i["message"],'Path':i["Path"]}  
+        addrr=dd['Path']
+        print(addrr)
+
+        target = os.path.join(APP_ROOT, 'img/')
+        
+        for file in request.files.getlist("img"):
+            os.remove(addrr)
+            print(file)
+            #filename= file.filename
+            filename=Id+'.jpg'
+            destination = "/".join([target, filename])
+            print(destination)
+            file.save(destination)
+        if (mongo.db.suspect.find({'_id': param})):
+        
+           update_query=mongo.db.suspect.update_one({"_id": Id},{'$set':{"name":Uname,"message": Message,"Path":destination}})
+        
+
+                
+        return jsonify({'msg':"successfull Add"})   
+                   
 
 
 @app.route("/Admin",methods=['GET'])
