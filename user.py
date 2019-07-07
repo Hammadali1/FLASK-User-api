@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.config['MONGO_DBNAME']=''
 app.config['MONGO_URI']='mongodb://hammad:hammad123@ds351455.mlab.com:51455/data'
 mongo = PyMongo(app)
-APP_ROOT='D:\\flasky\\fyp'
+APP_ROOT=''
 
 
 @app.route("/suspect", methods=['POST'])
