@@ -65,7 +65,7 @@ def UpdateUser(param):
         
         if (mongo.db.user.find({'_id': param})):
         
-              update_query=mongo.db.user.update_one({"_id": Id},{'$set':{"name":Uname,"email": Message,"password":password}})
+              update_query=mongo.db.user.update_one({"_id": Id},{'$set':{"uname":Uname,"email": Message,"password":password}})
               return jsonify({'msg':"successfull Add"})   
                    
 
