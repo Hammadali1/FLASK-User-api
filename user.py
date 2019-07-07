@@ -10,6 +10,7 @@ app = Flask(__name__)
 app.config['MONGO_DBNAME']=''
 app.config['MONGO_URI']='mongodb://hammad:hammad123@ds351455.mlab.com:51455/data'
 mongo = PyMongo(app)
+APP_ROOT='D:\\flasky\\fyp'
 
 
 @app.route("/suspect", methods=['POST'])
@@ -38,20 +39,10 @@ def upload():
         mongo.db.suspect.insert({"_id": Id,"name":Uname,"message": Message,"Path":destination})
         
 
-        return ("Successfully Add")   
-       # return render_template("suspect_form.html")
-
-    #else:
-     # return render_template("suspect_form.html")
-
-
+        return ("Successfully Add")
 @app.route("/suspect", methods=['GET'])
 def retrieve():
     if request.method=='GET':
-        
-        target = "/".join(['D:', 'flasky'])
-        target1 = "/".join([target, 'fyp'])
-        target2 = "/".join([target1, 'img'])
         
         data = mongo.db.suspect.find({}).count()
         if (data == 0):
@@ -60,9 +51,7 @@ def retrieve():
             d = []
             data=mongo.db.suspect.find({})
             for i in data:
-                image="/".join([target2, i['_id']])
-                print(image)
-                d.append({"id":i["_id"] ,"name": i["name"],"message":i["message"],'image':image})
+                d.append({"id":i["_id"] ,"name": i["name"],"message":i["message"],'image':i["Path"]})
         
             return jsonify(d)
             
