@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.config['MONGO_DBNAME']=''
 app.config['MONGO_URI']='mongodb://hammad:hammad123@ds351455.mlab.com:51455/data'
 mongo = PyMongo(app)
-APP_ROOT=''
+APP_ROOT='img'
 
 
 @app.route("/suspect", methods=['POST'])
@@ -22,11 +22,7 @@ def upload():
         Id=request.form['id']
         Message=request.form['message']#s='img/'+Id
 
-        target = os.path.join(APP_ROOT, 'img/')
-
-
-        if not os.path.isdir(target):
-            os.mkdir(target)
+        
                 
         for file in request.files.getlist("img"):
             print(file)
