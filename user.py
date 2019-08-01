@@ -30,7 +30,7 @@ def upload():
         #i=1
         #image='Image'
         image=[]
-        var=(request.form.getlist("imgList")
+        s=request.form.getlist("imgList"
         for file in str(request.form.getlist("imgList")):
             print(file)
             image.append(file)
@@ -41,7 +41,7 @@ def upload():
           #  i=i+1    
          #here you could use make_response(render_template(...)) too
         print(image)
-        mongo.db.suspect.insert({"_id": Id,"name":Uname,"message": Message,"image":var})
+        mongo.db.suspect.insert({"_id": Id,"name":Uname,"message": Message,"image":s})
 
         return ("Successfully Add")
         #return ("Successfully Add")   
@@ -71,46 +71,6 @@ def retrieve():
             return jsonify(d)
 
 
-
-"""
-@app.route("/suspect", methods=['POST'])
-def upload():
-    if request.method=='POST':
-        
-
-        Uname=request.form['name']
-        Id=request.form['id']
-        Message=request.form['message']#s='img/'+Id
-
-        
-                
-        for file in request.files.getlist("img"):
-            print(file)
-            #filename= file.filename
-            filename=Id+'.jpg'
-            destination = "/".join([target, filename])
-            print(destination)
-            file.save(destination)
-        
-        mongo.db.suspect.insert({"_id": Id,"name":Uname,"message": Message,"Path":destination})
-        
-
-        return ("Successfully Add")
-@app.route("/suspect", methods=['GET'])
-def retrieve():
-    if request.method=='GET':
-        
-        data = mongo.db.suspect.find({}).count()
-        if (data == 0):
-            return "data not found"
-        else:
-            d = []
-            data=mongo.db.suspect.find({})
-            for i in data:
-                d.append({"id":i["_id"] ,"name": i["name"],"message":i["message"],'image':i["Path"]})
-        
-            return jsonify(d)
-            """
 
 @app.route("/suspect/<string:param>", methods=['DELETE'])
 def delete(param):
