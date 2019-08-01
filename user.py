@@ -29,7 +29,8 @@ def upload():
 
         #i=1
         #image='Image'
-        image=[]    
+        image=[]
+        var=(request.form.getlist("imgList")
         for file in str(request.form.getlist("imgList")):
             print(file)
             image.append(file)
@@ -40,7 +41,7 @@ def upload():
           #  i=i+1    
          #here you could use make_response(render_template(...)) too
         print(image)
-        mongo.db.suspect.insert({"_id": Id,"name":Uname,"message": Message,"image":image})
+        mongo.db.suspect.insert({"_id": Id,"name":Uname,"message": Message,"image":var})
 
         return ("Successfully Add")
         #return ("Successfully Add")   
