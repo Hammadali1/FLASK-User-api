@@ -30,7 +30,7 @@ def upload():
         #i=1
         #image='Image'
         image=[]
-        s=request.form.getlist("imgList"
+        s=request.form.getlist("imgList")
         for file in str(request.form.getlist("imgList")):
             print(file)
             image.append(file)
