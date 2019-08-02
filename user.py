@@ -56,7 +56,7 @@ def delete(param):
         ddd={}
         data=mongo.db.suspect.find({'_id': param})
         for i in data:
-          ddd={"id":i["_id"] ,"name": i["name"],"message":i["message"],'Path':i["Path"]}  
+          ddd={"id":i["_id"] ,"name": i["name"],"message":i["message"],'Path':i["image"]}  
           print("yaho")
         print("yaho1")
             
@@ -76,8 +76,8 @@ def Update(param):
              d = []
              data=mongo.db.suspect.find({'_id':param})
              for i in data:
-                 d.append({"id":param ,"name": i["name"],"message":i["message"],'Path':i['Path']})
-             print (d[0])
+                 d.append({"id":param ,"name": i["name"],"message":i["message"],'images':i['image']})
+             
              return jsonify(d)
              print(d)
         return ('not find')                
