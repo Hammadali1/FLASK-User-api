@@ -18,38 +18,15 @@ APP_ROOT='img'
 @app.route("/suspect", methods=['POST'])
 def upload():
     if request.method=='POST':
-        
-
         Uname=request.form['name']
         Id=request.form['id']
         Message=request.form['message']
-        #Image=request.form.getlist("imgList")
-        #print(request.form['imgList'])
-        #mongo.db.suspect.insert({"_id": Id,"name":Uname,"message": Message,"image":Image})
-
-        #i=1
-        #image='Image'
-        image=[]
         s=request.form.getlist("imgList")
-        for file in str(request.form.getlist("imgList")):
-            print(file)
-            image.append(file)
-            #filename= file.filename
-            #image=image+str(i)
-           # print(image) 
-          #  mongo.db.suspect.update_one({"_id": Id},{'$set':{image:file}})
-          #  i=i+1    
-         #here you could use make_response(render_template(...)) too
-        print(image)
-        mongo.db.suspect.insert({"_id": Id,"name":Uname,"message": Message,"image":s})
-
+        s1=s[0]
+        s2=s1.split(",")
+        mongo.db.suspect.insert({"_id": Id,"name":Uname,"message": Message,"image":s2})
         return ("Successfully Add")
-        #return ("Successfully Add")   
-       # return render_template("suspect_form.html")
-
-    #else:
-     # return render_template("suspect_form.html")
-
+        
 
 @app.route("/suspect", methods=['GET'])
 def retrieve():
@@ -64,7 +41,6 @@ def retrieve():
 
             data=mongo.db.suspect.find({})
             for i in data:
-                #d.append({"id":i["_id"] ,"name": i["name"],"message":i["message"],'image':i[]})
                 d.append({"id":i["_id"] ,"name": i["name"],"message":i["message"],'image':i['image']})
                 
         
