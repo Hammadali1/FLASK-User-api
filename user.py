@@ -52,20 +52,7 @@ def retrieve():
 def delete(param):
     if request.method=='DELETE':
         
-        data=mongo.db.suspect.find({'_id': param})
-        ddd={}
-        data=mongo.db.suspect.find({'_id': param})
-        for i in data:
-          ddd={"id":i["_id"] ,"name": i["name"],"message":i["message"],'Path':i["image"]}  
-          print("yaho")
-        print("yaho1")
-            
-        addrr=ddd['Path']
-        print(addrr)
-
-
         mongo.db.suspect.delete_one({'_id': param})
-        os.remove(addrr)
         return "deleted"
         
 @app.route("/suspect/<string:param>", methods=['POST','GET'])
@@ -83,32 +70,14 @@ def Update(param):
         return ('not find')                
     if request.method=='POST':
         Uname=request.form['name']
-        Id=param
+        Id=request.form['id']
         Message=request.form['message']
-        
-        d={}
-        data=mongo.db.suspect.find({'_id': param})
-        for i in data:
-          dd={"id":i["_id"] ,"name": i["name"],"message":i["message"],'Path':i["Path"]}  
-        addrr=dd['Path']
-        print(addrr)
-
-        target = os.path.join(APP_ROOT, 'img/')
-        
-        for file in request.files.getlist("img"):
-            os.remove(addrr)
-            print(file)
-            #filename= file.filename
-            filename=Id+'.jpg'
-            destination = "/".join([target, filename])
-            print(destination)
-            file.save(destination)
+        s=request.form.getlist("imgList")
+        s1=s[0]
+        s2=s1.split(",")
         if (mongo.db.suspect.find({'_id': param})):
         
-           update_query=mongo.db.suspect.update_one({"_id": Id},{'$set':{"name":Uname,"message": Message,"Path":destination}})
-        
-
-                
+           update_query=mongo.db.suspect.update_one({"_id": Id},{'$set':{"name":Uname,"message": Message,"image":s2}})
         return jsonify({'msg':"successfull Add"})   
                    
 
